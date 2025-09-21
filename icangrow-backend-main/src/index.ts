@@ -10,6 +10,10 @@ import { errorHandler } from "./middleware/error-handler";
 import { notFound } from "./middleware/not-found";
 import authRoutes from "./routes/auth";
 import clientsRoutes from "./routes/clients";
+import dispatchesRoutes from "./routes/dispatches";
+import inventoryRoutes from "./routes/inventory";
+import suppliersRouter from "./routes/suppliers";
+import purchaseOrdersRouter from "./routes/purchase_orders";
 import { initializeSupabase } from "./services/supabase";
 
 // Load environment variables
@@ -72,6 +76,10 @@ app.get("/health", (req, res) => {
 // API routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/clients", clientsRoutes);
+app.use("/api/v1/dispatches", dispatchesRoutes);
+app.use("/api/v1/inventory", inventoryRoutes);
+app.use("/api/v1/suppliers", suppliersRouter);
+app.use("/api/v1/purchase-orders", purchaseOrdersRouter);
 
 // 404 handler
 app.use(notFound);

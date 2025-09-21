@@ -121,6 +121,24 @@ choco install pnpm
 | POST   | `/api/v1/auth/logout`              | User logout               | Private |
 | GET    | `/api/v1/auth/me`                  | Get current user profile  | Private |
 
+### Inventory Management Endpoints
+
+| Method | Endpoint                                    | Description                    | Access  |
+| ------ | ------------------------------------------- | ------------------------------ | ------- |
+| GET    | `/api/v1/inventory/lots`                    | Get inventory lots with filters| Private |
+| GET    | `/api/v1/inventory/lots/:id`                | Get specific lot details       | Private |
+| GET    | `/api/v1/inventory/lots/:id/movements`      | Get stock movements for lot    | Private |
+| POST   | `/api/v1/inventory/lots/:id/adjust`         | Adjust stock quantity          | Private |
+| PATCH  | `/api/v1/inventory/lots/:id/quarantine`     | Toggle quarantine status       | Private |
+| GET    | `/api/v1/inventory/batches/:id`             | Get batch information          | Private |
+| GET    | `/api/v1/inventory/batches/:id/stages`      | Get batch stages progression   | Private |
+| GET    | `/api/v1/inventory/batches/:id/daily-logs`  | Get daily logs for batch       | Private |
+| GET    | `/api/v1/inventory/stats`                   | Get inventory statistics       | Private |
+
+**📋 Detailed Inventory API Documentation:** See [INVENTORY_API.md](./INVENTORY_API.md) for complete endpoint documentation with request/response examples.
+
+**🧪 Postman Collection:** Import [iCanGrow-Inventory-API.postman_collection.json](./postman/iCanGrow-Inventory-API.postman_collection.json) for API testing.
+
 ### Request/Response Examples
 
 #### Signup
@@ -229,9 +247,15 @@ src/
 ├── types/
 │   └── database.types.ts    # Supabase generated types
 ├── routes/
-│   └── auth.ts             # Authentication routes
+│   ├── auth.ts             # Authentication routes
+│   ├── clients.ts          # Client management routes
+│   ├── dispatches.ts       # Dispatch management routes
+│   └── inventory.ts        # Inventory management routes
 ├── services/
 │   ├── auth.ts             # Authentication service
+│   ├── clients.ts          # Client management service
+│   ├── dispatches.ts       # Dispatch management service
+│   ├── inventory.ts        # Inventory management service
 │   └── supabase.ts         # Supabase client configuration
 ├── middleware/
 │   ├── auth.ts             # Authentication middleware
@@ -240,6 +264,10 @@ src/
 └── utils/
     ├── jwt.ts              # JWT utilities
     └── validation.ts       # Request validation schemas
+postman/
+├── iCanGrow-Auth-API.postman_collection.json        # Auth API tests
+├── iCanGrow-Inventory-API.postman_collection.json   # Inventory API tests
+└── iCanGrow-Environment.postman_environment.json    # Environment variables
 ```
 
 ## Environment Variables

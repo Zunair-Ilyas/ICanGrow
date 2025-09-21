@@ -82,11 +82,33 @@ export const changePasswordSchema = z
 		path: ["confirmNewPassword"],
 	});
 
+// Inventory validation schemas
+export const inventoryLotsQuerySchema = z.object({
+	searchTerm: z.string().optional(),
+	facilityFilter: z.string().optional(),
+	productTypeFilter: z.string().optional(),
+	stageFilter: z.string().optional(),
+	statusFilter: z.string().optional(),
+});
+
+export const stockAdjustmentSchema = z.object({
+	quantity: z.number().refine((val) => val !== 0, {
+		message: "Quantity cannot be zero",
+	}),
+	reason: z.string().min(1, "Reason is required").max(500, "Reason must be less than 500 characters"),
+	unit_of_measure: z.string().optional(),
+});
+
+export const quarantineToggleSchema = z.object({
+	action: z.enum(["quarantine", "release"]),
+});
+
 // Validation middleware
-export const validate = (schema: z.ZodSchema) => {
+export const validate = (schema: z.ZodSchema, source: "body" | "query" | "params" = "body") => {
 	return (req: any, res: any, next: any) => {
 		try {
-			schema.parse(req.body);
+			const dataToValidate = source === "query" ? req.query : source === "params" ? req.params : req.body;
+			schema.parse(dataToValidate);
 			next();
 		} catch (error) {
 			if (error instanceof z.ZodError) {
